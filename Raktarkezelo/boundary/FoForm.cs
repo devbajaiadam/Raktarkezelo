@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Raktarkezelo.boundary;
 using Raktarkezelo.control;
 
 namespace Raktarkezelo
 {
-
-
-
     // Form1- ként lehet rá hivatkozni 
     public partial class Form1 : Form
     {
@@ -144,6 +134,7 @@ namespace Raktarkezelo
             dr = MessageBox.Show("Biztosan ki akar lépni?", "Kérdés", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
+                ABKezelo.KapcsolatBontas();
                 Application.Exit();
             }
         }

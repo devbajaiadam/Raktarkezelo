@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Raktarkezelo.control;
-using System.Data.SqlClient;
 
 namespace Raktarkezelo.boundary
 {
@@ -44,6 +36,7 @@ namespace Raktarkezelo.boundary
             dr = MessageBox.Show("Biztosan ki akar lépni?", "Kérdés", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
+                ABKezelo.KapcsolatBontas();
                 Application.Exit();
             }
         }
