@@ -71,7 +71,7 @@ namespace Raktarkezelo.control
 
 
         #region Beléptető
-        public static UserClass Belepteto(string fnev, string jelszo)
+        public static bool Belepteto(string fnev, string jelszo)
         {
             belepo = null;
             try
@@ -86,15 +86,16 @@ namespace Raktarkezelo.control
                     if (reader.HasRows)
                     {
                         reader.Read();
-                        belepo = (new UserClass(reader["nev"].ToString(), (int)reader["szerepId"], (int)reader["aktiv"], reader["userId"].ToString(), reader["jelszo"].ToString()));
+                        belepo = new UserClass(reader["nev"].ToString(), (int)reader["szerepId"],
+                                (int)reader["aktiv"], reader["userId"].ToString(), reader["jelszo"].ToString());
                         reader.Close();
                         belepoFnev = belepo.FelhnevPK.ToString();
                         belepoNev = belepo.Nev.ToString();
                         jog = belepo.SzerepId;
-                        return belepo;
+                        return true;
                     }
                 }
-                return null;
+                return false;
             }
             catch (Exception ex)
             {
@@ -126,35 +127,6 @@ namespace Raktarkezelo.control
                 return false;
             }
             return true;
-        }
-        #endregion
-
-        #region Felolvasás
-        public static List<UserClass> FelhasznalokFelolvasasa()
-        {
-            try
-            {
-                command.Parameters.Clear();
-                command.CommandText = felhasznaloFelolvasas;
-                List<UserClass> felhasznalok = new List<UserClass>();
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        felhasznalok.Add(new UserClass(reader["nev"].ToString(),
-                        (int)reader["szerepId"],
-                        (int)reader["aktiv"],
-                        reader["userId"].ToString(),
-                        reader["jelszo"].ToString()));
-                    }
-                    reader.Close();
-                }
-                return felhasznalok;
-            }
-            catch (Exception ex)
-            {
-                throw new ABKivetel("A felhasználók beolvasása sikertelen", ex);
-            }
         }
         #endregion
 
@@ -205,105 +177,83 @@ namespace Raktarkezelo.control
         #endregion
 
         #region DatabaseUpdate
-        public static bool AdatMódosításVagyAdattörlés(List<string> adatok, string torlesVagyModosias)
+        public static void NevModosit(string fnev, string nev)
         {
-            if (torlesVagyModosias == "nevModosit")
+            try
             {
-                string fnev = adatok[0];
-                string nev = adatok[1];
-                try
-                {
-                    command.Parameters.Clear();
-                    command.CommandText = nevModosit;
-                    command.Parameters.AddWithValue("@nev", nev);
-                    command.Parameters.AddWithValue("@userId", fnev);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                    throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
-                }
-                return true;
+                command.Parameters.Clear();
+                command.CommandText = nevModosit;
+                command.Parameters.AddWithValue("@nev", nev);
+                command.Parameters.AddWithValue("@userId", fnev);
+                command.ExecuteNonQuery();
             }
-            else if (torlesVagyModosias == "jogModosit")
+            catch (Exception ex)
             {
-                string fnev = adatok[0];
-                int jog = Convert.ToInt32(adatok[2]);
-                try
-                {
-                    command.Parameters.Clear();
-                    command.CommandText = jogModosit;
-                    command.Parameters.AddWithValue("@szerepId", jog);
-                    command.Parameters.AddWithValue("@userId", fnev);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                    throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
-                }
-                return true;
+                throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
             }
-            else if (torlesVagyModosias == "nevEsJogModosit")
-            {
-                string fnev = adatok[0];
-                string nev = adatok[1];
-                int jog = Convert.ToInt32(adatok[2]);
-                try
-                {
-                    command.Parameters.Clear();
-                    command.CommandText = nevEsJogModosit;
-                    command.Parameters.AddWithValue("@szerepId", jog);
-                    command.Parameters.AddWithValue("@userId", fnev);
-                    command.Parameters.AddWithValue("@nev", nev);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                    throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
-                }
-                return true;
-            }
-            else if (torlesVagyModosias == "torles")
-            {
-                string torles = adatok[0];
-                try
-                {
-                    command.Parameters.Clear();
-                    command.CommandText = felhasznaloTorles;
-                    command.Parameters.AddWithValue("@userId", torles);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                    throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
-                }
-                return true;
+        }
 
-            }
-            else if (torlesVagyModosias == "torlesKategoriabol")
+        public static void JogModosit(string fnev, int jog)
+        {
+            try
             {
-                int Id = Convert.ToInt32(adatok[0]);
-                try
-                {
-                    command.Parameters.Clear();
-                    command.CommandText = torlesKategoriabol;
-                    command.Parameters.AddWithValue("@kategoriaId", Id);
-                    command.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Az adat törlése sikertelen, használatban lévő referenciaadat törlése nem lehetséges!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                   
-                }
-               
+                command.Parameters.Clear();
+                command.CommandText = jogModosit;
+                command.Parameters.AddWithValue("@szerepId", jog);
+                command.Parameters.AddWithValue("@userId", fnev);
+                command.ExecuteNonQuery();
             }
-            return false;
+            catch (Exception ex)
+            {
+                throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
+            }
+        }
+
+        public static void NevEsJogModosit(string fnev, int jog, string nev)
+        {
+            try
+            {
+                command.Parameters.Clear();
+                command.CommandText = nevEsJogModosit;
+                command.Parameters.AddWithValue("@szerepId", jog);
+                command.Parameters.AddWithValue("@userId", fnev);
+                command.Parameters.AddWithValue("@nev", nev);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
+            }
+        }
+
+        public static void KategoriaTorles(int id)
+        {
+            try
+            {
+                command.Parameters.Clear();
+                command.CommandText = torlesKategoriabol;
+                command.Parameters.AddWithValue("@kategoriaId", id);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new ABKivetel("Az adat törlése sikertelen, használatban lévő referenciaadat törlése nem lehetséges!", ex);
+            }
+        }
+
+        public static void FelhasznaloTorles(string fnev)
+        {
+            try
+            {
+                command.Parameters.Clear();
+                command.CommandText = felhasznaloTorles;
+                command.Parameters.AddWithValue("@userId", fnev);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new ABKivetel("Az adatmódosítás sikertelen!", ex);
+            }
         }
         #endregion
 
@@ -420,7 +370,7 @@ namespace Raktarkezelo.control
                 MessageBox.Show("Az adat törlése sikertelen, használatban lévő referenciaadat törlése nem lehetséges!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-           
+
         }
         #endregion
 

@@ -156,7 +156,7 @@ namespace Raktarkezelo.boundary
             // 
             // btnkilepes
             // 
-            this.btnkilepes.Location = new System.Drawing.Point(903, 618);
+            this.btnkilepes.Location = new System.Drawing.Point(906, 618);
             this.btnkilepes.Name = "btnkilepes";
             this.btnkilepes.Size = new System.Drawing.Size(172, 47);
             this.btnkilepes.TabIndex = 17;
@@ -170,9 +170,9 @@ namespace Raktarkezelo.boundary
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label6.Location = new System.Drawing.Point(12, 56);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(159, 20);
+            this.label6.Size = new System.Drawing.Size(167, 20);
             this.label6.TabIndex = 18;
-            this.label6.Text = "Termék iválasztása:";
+            this.label6.Text = "Termék kiválasztása:";
             // 
             // label7
             // 
@@ -303,7 +303,7 @@ namespace Raktarkezelo.boundary
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
-            // eladasForm
+            // EladasForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Lavender;
@@ -329,7 +329,7 @@ namespace Raktarkezelo.boundary
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panelFejlec);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "eladasForm";
+            this.Name = "EladasForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.panelFejlec.ResumeLayout(false);
             this.panelFejlec.PerformLayout();

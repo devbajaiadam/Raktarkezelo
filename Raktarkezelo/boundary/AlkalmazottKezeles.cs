@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using Raktarkezelo.control;
 
@@ -16,7 +15,7 @@ namespace Raktarkezelo.boundary
 
         string nevEllenorzes;
         string cboxEllenorzes;
-        string fnevEllenorzes;
+        string kivalasztottFelhasznalo;
         string szerep;
 
         //---------------------------------------------Inicializálás + Form load---------------------------------------------
@@ -35,7 +34,7 @@ namespace Raktarkezelo.boundary
                 DGVAlkalmazottFelvitel.Columns[2].HeaderText = "Jogosultsága";
             }
         }
-     
+
         //----------------------------------------------------VOIDOK----------------------------------------------------------------
 
         public void Tisztit()
@@ -43,27 +42,28 @@ namespace Raktarkezelo.boundary
             txbFelhNev.Text = "";
             txbJelszo.Text = "";
             txbNev.Text = "";
-            nevEllenorzes ="";
-            cboxEllenorzes="";
-            fnevEllenorzes="";
+            nevEllenorzes = "";
+            cboxEllenorzes = "";
+            kivalasztottFelhasznalo = "";
             ABKezelo.DGVFeltoltes(DGVAlkalmazottFelvitel, DGVFeltoltes);
             cboxJogosultsag.SelectedIndex = -1;
             txbFelhNev.Enabled = true;
             txbNev.Enabled = true;
             txbJelszo.Enabled = true;
+            DGVAlkalmazottFelvitel.ClearSelection();
             if (DGVAlkalmazottFelvitel.Rows.Count != 0)
             {
                 DGVAlkalmazottFelvitel.Columns[0].HeaderText = "Azonosító";
                 DGVAlkalmazottFelvitel.Columns[1].HeaderText = "Név";
                 DGVAlkalmazottFelvitel.Columns[2].HeaderText = "Jogosultsága";
             }
-                
+
         }
         //---------------------------------------------------------------------------------------------------------------------------
 
         private void btnFelvitel_Click(object sender, EventArgs e)
         {
-            int aktiv = 1;    
+            int aktiv = 1;
             try
             {
                 //Ellenőrzés hogy ne legyen kiválasztott elem
@@ -75,14 +75,14 @@ namespace Raktarkezelo.boundary
 
                     if (siker == true)
                     {
-                        MessageBox.Show("A felvitel sikeresen megtörtént", "Információ",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("A felvitel sikeresen megtörtént", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                     Tisztit();
                 }
-                else if(txbJelszo.Text == "(Nem módosítható!)")
+                else if (txbJelszo.Text == "(Nem módosítható!)")
                 {
-                    MessageBox.Show("Jelenleg ki van választva egy adat, kérem nyomja meg a frissítés gombot, ha új adatot kíván felvinni!",  
+                    MessageBox.Show("Jelenleg ki van választva egy adat, kérem nyomja meg a frissítés gombot, ha új adatot kíván felvinni!",
                                 "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -92,7 +92,7 @@ namespace Raktarkezelo.boundary
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);   
+                MessageBox.Show(ex.Message);
             }
         }
         private void DGVAlkalmazottFelvitel_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -104,7 +104,7 @@ namespace Raktarkezelo.boundary
                 try
                 {
                     txbFelhNev.Text = DGVAlkalmazottFelvitel.SelectedRows[0].Cells[0].Value.ToString();
-                    fnevEllenorzes = DGVAlkalmazottFelvitel.SelectedRows[0].Cells[0].Value.ToString();
+                    kivalasztottFelhasznalo = DGVAlkalmazottFelvitel.SelectedRows[0].Cells[0].Value.ToString();
                     txbNev.Text = DGVAlkalmazottFelvitel.SelectedRows[0].Cells[1].Value.ToString();
                     nevEllenorzes = DGVAlkalmazottFelvitel.SelectedRows[0].Cells[1].Value.ToString();
                     szerep = DGVAlkalmazottFelvitel.SelectedRows[0].Cells[2].Value.ToString();
@@ -120,117 +120,72 @@ namespace Raktarkezelo.boundary
                 }
             }
         }
-       
+
         private void btnTisztit_Click(object sender, EventArgs e)
         {
             Tisztit();
         }
         private void btnModositas_Click(object sender, EventArgs e)
         {
-            if (txbFelhNev.Text == fnevEllenorzes)
+            if (DGVAlkalmazottFelvitel.SelectedRows.Count == 1)
             {
-                List<string> felhAdatokModosit = new List<string>();
-                DialogResult dr;
-                dr = MessageBox.Show("Biztosan módosítani kívánja az adatokat?", "Kérdés", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
-                if (dr == DialogResult.Yes)
+                if (DialogResult.Yes == MessageBox.Show("Biztosan módosítani kívánja az adatokat?", "Kérdés", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
-                    felhAdatokModosit.Add(txbFelhNev.Text);
-                    felhAdatokModosit.Add(txbNev.Text);
-                    felhAdatokModosit.Add(Convert.ToString(cboxJogosultsag.SelectedValue));
-
-                    if (txbNev.Text != "" && txbNev.Text != nevEllenorzes && cboxJogosultsag.SelectedIndex != -1 && cboxEllenorzes != cboxJogosultsag.Text)
-                    //Módosítás mintkét adat megváltoztatása esetén
-                    {      
-                        bool megtortent = ABKezelo.AdatMódosításVagyAdattörlés(felhAdatokModosit, "nevEsJogModosit");
-                        if (megtortent == true)
+                    try
+                    {
+                        if (txbNev.Text != "" && txbNev.Text != nevEllenorzes && cboxJogosultsag.SelectedIndex != -1 && cboxEllenorzes != cboxJogosultsag.Text)
                         {
+                            //Módosítás mintkét adat megváltoztatása esetén
+                            ABKezelo.NevEsJogModosit(txbFelhNev.Text, (int)cboxJogosultsag.SelectedValue, txbNev.Text);
                             MessageBox.Show("A név és jogosultság módosítása sikeresen megtörtént!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Tisztit();
                         }
-                        else
+                        else if (txbNev.Text != "" && txbNev.Text == nevEllenorzes && cboxJogosultsag.SelectedIndex != -1 && cboxEllenorzes != cboxJogosultsag.Text)
                         {
-                            MessageBox.Show("A művelet sikertelen!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        }
-                    }
-                    else if (txbNev.Text != "" && txbNev.Text == nevEllenorzes && cboxJogosultsag.SelectedIndex != -1 && cboxEllenorzes != cboxJogosultsag.Text)
-                    //Módosítás csak a comboBox megvátozása esetén
-                    {
-                        bool megtortent = ABKezelo.AdatMódosításVagyAdattörlés(felhAdatokModosit, "jogModosit");
-                        if (megtortent == true)
-                        {
+                            //Módosítás csak a comboBox megvátozása esetén
+                            ABKezelo.JogModosit(txbFelhNev.Text, (int)cboxJogosultsag.SelectedValue);
                             MessageBox.Show("A jogosultság módosítása sikeresen megtörtént!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Tisztit();
                         }
-                        else
+                        else if (txbNev.Text != "" && txbNev.Text != nevEllenorzes && cboxJogosultsag.SelectedIndex != -1 && cboxEllenorzes == cboxJogosultsag.Text)
                         {
-                            MessageBox.Show("Hiba!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        }
-                    }
-                    else if (txbNev.Text != "" && txbNev.Text != nevEllenorzes && cboxJogosultsag.SelectedIndex != -1 && cboxEllenorzes == cboxJogosultsag.Text)
-                    //Módosítás csak a Név megváltozása esetén
-                    {
-                        bool megtortent = ABKezelo.AdatMódosításVagyAdattörlés(felhAdatokModosit, "nevModosit");
-                        if (megtortent == true)
-                        {
+                            //Módosítás csak a Név megváltozása esetén
+                            ABKezelo.NevModosit(txbFelhNev.Text, txbNev.Text);
                             MessageBox.Show("A név módosítása sikeresen megtörtént!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Tisztit();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Hiba!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("A módosítás sikertelen, kérem ellenőrizze az adatokat!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Válassza ki a módosítani kívánt elemet!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-        }
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (DGVAlkalmazottFelvitel.Rows.Count > 1)
-            {
-                List<string> torles = new List<string>();
-                if (txbFelhNev.Text == fnevEllenorzes && fnevEllenorzes != "")
-                {
-                    DialogResult dr;
-                    dr = MessageBox.Show("Biztosan törölni kívánja a kiválasztott adatot?", "Kérdés", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (dr == DialogResult.Yes)
-                    {
-                        torles.Add(txbFelhNev.Text);
-                        bool sikerultvagynem = ABKezelo.AdatMódosításVagyAdattörlés(torles, "torles");
-                        if (sikerultvagynem == true)
-                        {
-                            MessageBox.Show("A kiválasztott elem törlésre került!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Hiba a törlés során!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         Tisztit();
                     }
-                }
-                else if (nevEllenorzes == "")
-                {
-                    MessageBox.Show("Nincs kiválasztott elem!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    MessageBox.Show("A törlés sikertelen!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("A módosítás sikertelen, kérem ellenőrizze az adatokat!" + "\n" + ex.Message, "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("Egy felhasználónak kötelező maradnia az adatbázisban!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Nincs kiválasztott adat!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+        private void btnTorles_Click(object sender, EventArgs e)
+        {
+            if (DGVAlkalmazottFelvitel.SelectedRows.Count == 1)
+            {
+                try
+                {
+                    if (DialogResult.Yes == MessageBox.Show("Biztosan törölni kívánja a kiválasztott adatot?", "Kérdés", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    {
+                        ABKezelo.FelhasznaloTorles(txbFelhNev.Text);
+                        MessageBox.Show("A kiválasztott elem törlésre került!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Tisztit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("A törlés sikertelen!" + "\n" + ex.Message, "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vállasszon ki egy sort!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void button4_Click(object sender, EventArgs e)
@@ -251,7 +206,7 @@ namespace Raktarkezelo.boundary
         }
     }
 }
-    
 
-    
+
+
 

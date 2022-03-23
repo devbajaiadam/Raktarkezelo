@@ -14,11 +14,11 @@ namespace Raktarkezelo.boundary
         {
             try
             {
-                UserClass User = ABKezelo.Belepteto(txbfelhNev.Text, JelszoMuveletek.Titkosit(txbjelszo.Text));
+                bool sikeresBelepes = ABKezelo.Belepteto(txbfelhNev.Text, JelszoMuveletek.Titkosit(txbjelszo.Text));
                 
-                if (User == null)
+                if (!sikeresBelepes)
                 {
-                    MessageBox.Show("Hibás felhasználónév és/vagy jelszó!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Hibás felhasználónév vagy jelszó!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {

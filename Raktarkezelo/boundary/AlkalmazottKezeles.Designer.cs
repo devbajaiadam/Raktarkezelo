@@ -42,7 +42,7 @@ namespace Raktarkezelo.boundary
             this.cboxJogosultsag = new System.Windows.Forms.ComboBox();
             this.btnFelvitel = new System.Windows.Forms.Button();
             this.btnModositas = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnTorles = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.btnTisztit = new System.Windows.Forms.Button();
             this.DGVAlkalmazottFelvitel = new System.Windows.Forms.DataGridView();
@@ -168,15 +168,15 @@ namespace Raktarkezelo.boundary
             this.btnModositas.UseVisualStyleBackColor = true;
             this.btnModositas.Click += new System.EventHandler(this.btnModositas_Click);
             // 
-            // button3
+            // btnTorles
             // 
-            this.button3.Location = new System.Drawing.Point(401, 360);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(154, 31);
-            this.button3.TabIndex = 18;
-            this.button3.Text = "Alkalmazott törlése";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnTorles.Location = new System.Drawing.Point(401, 360);
+            this.btnTorles.Name = "btnTorles";
+            this.btnTorles.Size = new System.Drawing.Size(154, 31);
+            this.btnTorles.TabIndex = 18;
+            this.btnTorles.Text = "Alkalmazott törlése";
+            this.btnTorles.UseVisualStyleBackColor = true;
+            this.btnTorles.Click += new System.EventHandler(this.btnTorles_Click);
             // 
             // button4
             // 
@@ -209,6 +209,7 @@ namespace Raktarkezelo.boundary
             this.DGVAlkalmazottFelvitel.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.DGVAlkalmazottFelvitel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVAlkalmazottFelvitel.Location = new System.Drawing.Point(23, 84);
+            this.DGVAlkalmazottFelvitel.MultiSelect = false;
             this.DGVAlkalmazottFelvitel.Name = "DGVAlkalmazottFelvitel";
             this.DGVAlkalmazottFelvitel.ReadOnly = true;
             this.DGVAlkalmazottFelvitel.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
@@ -230,7 +231,7 @@ namespace Raktarkezelo.boundary
             this.lblJelszoMegjelenit.Text = "Megjelenít";
             this.lblJelszoMegjelenit.Click += new System.EventHandler(this.lblJelszoMegjelenit_Click);
             // 
-            // alkalmazottKezeles
+            // AlkalmazottKezeles
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Lavender;
@@ -239,7 +240,7 @@ namespace Raktarkezelo.boundary
             this.Controls.Add(this.DGVAlkalmazottFelvitel);
             this.Controls.Add(this.btnTisztit);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnTorles);
             this.Controls.Add(this.btnModositas);
             this.Controls.Add(this.btnFelvitel);
             this.Controls.Add(this.cboxJogosultsag);
@@ -252,7 +253,7 @@ namespace Raktarkezelo.boundary
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panelFejlec);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "alkalmazottKezeles";
+            this.Name = "AlkalmazottKezeles";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "alkalmazottKezeles";
             this.panelFejlec.ResumeLayout(false);
@@ -279,7 +280,7 @@ namespace Raktarkezelo.boundary
         private System.Windows.Forms.ComboBox cboxJogosultsag;
         private System.Windows.Forms.Button btnFelvitel;
         private System.Windows.Forms.Button btnModositas;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnTorles;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnTisztit;
         private System.Windows.Forms.DataGridView DGVAlkalmazottFelvitel;

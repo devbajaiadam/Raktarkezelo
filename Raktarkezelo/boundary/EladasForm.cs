@@ -247,9 +247,9 @@ namespace Raktarkezelo.boundary
         }
         private void btnMennyisegModosit_Click(object sender, EventArgs e)
         {
-            if (DGVKosar.SelectedRows.Count != 0)
+            if (DGVKosar.SelectedRows.Count == 1)
             {
-                if (nudMennyiseg.Value > (int)DGVAktualisRaktar.Rows[selectedIndex].Cells[3].Value && nudMennyiseg.Value != osszMennyisegEllenorzes)
+                if (nudMennyiseg.Value >= (int)DGVAktualisRaktar.Rows[selectedIndex].Cells[3].Value && nudMennyiseg.Value != osszMennyisegEllenorzes)
                 {
                     btnTorlesOszbol.Enabled = false;
                     int dtkosarIndex = 0;
@@ -298,10 +298,10 @@ namespace Raktarkezelo.boundary
                             btnMennyisegModosit.Enabled = false;
                             MessageBox.Show("A módosítás sikeres!", "Információ!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
-                    }
-                    else if (index == -1)
-                    {
-                        MessageBox.Show("Nincs kiválasztott elem!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else
+                        {
+                            MessageBox.Show("A megadott mennyiség nem lehet nagyobb az aktuális raktárkészletnél!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                     else if (nudMennyiseg.Value == 0)
                     {
@@ -312,10 +312,11 @@ namespace Raktarkezelo.boundary
                 {
                     MessageBox.Show("Sikertelen módosítás!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else
-                {
-                    MessageBox.Show("A megadott mennyiség nem lehet nagyobb az aktuális raktárkészletnél!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                
+            }
+            else if (DGVKosar.SelectedCells.Count == -1)
+            {
+                MessageBox.Show("Nincs kiválasztott elem!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void btnEladasVeglegesit_Click(object sender, EventArgs e)

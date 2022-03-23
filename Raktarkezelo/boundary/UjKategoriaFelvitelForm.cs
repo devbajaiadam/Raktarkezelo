@@ -102,16 +102,11 @@ namespace Raktarkezelo.boundary
                 dr = MessageBox.Show("Biztosan törölni kívánja a kiválasztott adatot?", "Kérdés", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
-                    List<string> adatok = new List<string>();
-                    adatok.Add(kijeloltId.ToString());
                     try
                     {
-                        bool siker = ABKezelo.AdatMódosításVagyAdattörlés(adatok, "torlesKategoriabol");
-                        if (siker == true)
-                        {
-                            MessageBox.Show("A kiválasztott elem törlésre került!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Frissit();
-                        }
+                        ABKezelo.KategoriaTorles(kijeloltId);
+                        MessageBox.Show("A kiválasztott elem törlésre került!", "Információ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Frissit();
                     }
                     catch (Exception)
                     {
