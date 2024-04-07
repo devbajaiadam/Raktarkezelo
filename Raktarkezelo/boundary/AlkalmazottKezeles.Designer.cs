@@ -70,7 +70,7 @@ namespace Raktarkezelo.boundary
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(273, 25);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Felhasználo Kezelő Felület";
+            this.label1.Text = "Felhasználó Kezelő Felület";
             // 
             // pictureBox2
             // 

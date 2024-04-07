@@ -249,7 +249,9 @@ namespace Raktarkezelo.boundary
         {
             if (DGVKosar.SelectedRows.Count == 1)
             {
-                if (nudMennyiseg.Value >= (int)DGVAktualisRaktar.Rows[selectedIndex].Cells[3].Value && nudMennyiseg.Value != osszMennyisegEllenorzes)
+
+               
+                if (nudMennyiseg.Value <= (int)DGVAktualisRaktar.Rows[selectedIndex].Cells[3].Value + osszMennyisegEllenorzes && nudMennyiseg.Value != osszMennyisegEllenorzes)
                 {
                     btnTorlesOszbol.Enabled = false;
                     int dtkosarIndex = 0;
@@ -312,7 +314,11 @@ namespace Raktarkezelo.boundary
                 {
                     MessageBox.Show("Sikertelen módosítás!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
+                else
+                {
+                    MessageBox.Show("A megadott mennyiség nem lehet nagyobb az aktuális raktárkészletnél!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
             else if (DGVKosar.SelectedCells.Count == -1)
             {
